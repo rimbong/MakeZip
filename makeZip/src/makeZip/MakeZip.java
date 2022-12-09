@@ -10,6 +10,7 @@ import java.util.zip.ZipOutputStream;
 public class MakeZip {
     private static String HOME_DIR = "C:\\FILES";
     private static String ZIP_NAME_DEFAULT = "download.zip";
+    private String g_zipName = "";
     private static String TARGET_DIR = "";
 
     public static void main(String[] args) {
@@ -17,8 +18,8 @@ public class MakeZip {
         File dir = new File(targetFilepath);
         MakeZip makeZip = new MakeZip();
         try {
-            // makeZip.createZip(dir, null,HOME_DIR);
-            makeZip.createZip(dir.listFiles(), null, HOME_DIR);
+            makeZip.createZip(dir, null,HOME_DIR);
+            //makeZip.createZip(dir.listFiles(), null, HOME_DIR);
         } catch (Exception err) {
             err.printStackTrace();
         }
@@ -34,8 +35,8 @@ public class MakeZip {
             if (zipName == null || "".equals(zipName)) {
                 zipName = ZIP_NAME_DEFAULT;
             }
-
-            outputFile = new File(homePath + File.separator + zipName);
+            g_zipName = zipName;
+            outputFile = new File(homePath + File.separator + g_zipName);
             fileOutputStream = new FileOutputStream(outputFile);
             zipOutputStream = new ZipOutputStream(fileOutputStream);
 
@@ -64,13 +65,14 @@ public class MakeZip {
             if (zipName == null || "".equals(zipName)) {
                 zipName = ZIP_NAME_DEFAULT;
             }
-            outputFile = new File(homePath + File.separator + zipName);
+            g_zipName = zipName;
+            outputFile = new File(homePath + File.separator + g_zipName);
             fileOutputStream = new FileOutputStream(outputFile);
             zipOutputStream = new ZipOutputStream(fileOutputStream);
 
             for (File file : files) {
                 String tmpName = file.getName();
-                if (!"zip".equals(tmpName.substring(tmpName.lastIndexOf(".") + 1))) {
+                if (!g_zipName.equals(tmpName)) {
                     if (file.isFile()) {
                         zipForFile(file, zipOutputStream, homePath);
                     }
@@ -97,7 +99,7 @@ public class MakeZip {
 
             for (File file : files) {
                 String tmpName = file.getName();
-                if (!"zip".equals(tmpName.substring(tmpName.lastIndexOf(".") + 1))) {
+                if (!g_zipName.equals(tmpName)) {
                     if (file.isFile()) {
                         zipForFile(file, zipOutputStream, filePath);
                     } else {
