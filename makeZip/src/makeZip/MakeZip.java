@@ -149,7 +149,7 @@ public class MakeZip {
     public static void close(ZipOutputStream zipOutputStream) throws Exception {
         try {
             if (zipOutputStream != null) {
-                zipOutputStream.closeEntry();
+                zipOutputStream.close();
             }
         } catch (Exception e) {
             throw e;
