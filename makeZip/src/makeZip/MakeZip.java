@@ -138,6 +138,42 @@ public class MakeZip {
         }
     }
 
+    public String[] reNameForDuplFileNames(String[] orgFileNames,int totalCnt) {
+        String newFileNames[] = new String[totalCnt];
+        String fName ="";
+        String ext ="";
+        Boolean isContinue = true;
+
+        for (int i = 0; i < orgFileNames.length; i++) {
+            fName = orgFileNames[i];
+            ext = fName.substring(fName.lastIndexOf(".") + 1);
+
+            while (isContinue) {
+                int duplCnt = 0;
+                for (int j = 0; j < orgFileNames.length; j++) {
+                    if (i == j) {
+                        continue;
+                    }
+                    String zipFileName = orgFileNames[j];
+                    if (fName.equals(zipFileName)) {
+                        duplCnt++;
+                    }
+                }
+
+                // 찾은 후 중복 카운트가 0일 경우 break
+                if (duplCnt > 0) {
+                    fName = fName.substring(0, fName.lastIndexOf(".")) + "(" + String.valueOf(duplCnt) + ")" + "." + ext;
+                } else {
+                    isContinue = false;
+                }
+            }
+            orgFileNames[i] = fName;
+            isContinue = true;
+        }
+        return newFileNames;
+    }
+    
+
     public static void closeEntry(ZipOutputStream zipOutputStream) throws Exception {
         try {
             if (zipOutputStream != null) {
